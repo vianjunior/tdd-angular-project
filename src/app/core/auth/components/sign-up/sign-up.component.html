@@ -1,0 +1,37 @@
+<div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2" data-testid="sign-up-page">
+  <div class="card" data-testid="form-sign-up">
+    <div class="card-header text-center">
+      <h1>Sign Up</h1>
+    </div>
+    <form class="card-body" [formGroup]="form">
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input id="username" class="form-control" formControlName="username" />
+        <div *ngIf="form.get('username')?.dirty || form.get('username')?.touched">
+          {{ form.get('username')?.errors | signUpMessageError }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input id="email" class="form-control" formControlName="email" />
+        <div *ngIf="form.get('email')?.dirty || form.get('email')?.touched">
+          {{ form.get('email')?.errors | signUpMessageError }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" class="form-control" type="password" formControlName="password" />
+        <div *ngIf="form.get('password')?.dirty || form.get('password')?.touched">
+          {{ form.get('password')?.errors | signUpMessageError }}
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="repeatPassword" class="form-label">Repeat Password</label>
+        <input id="repeatPassword" class="form-control" type="password" formControlName="repeatPassword" />
+        <div *ngIf="form.get('repeatPassword')?.dirty || form.get('repeatPassword')?.touched">
+          {{ form.get('repeatPassword')?.errors | signUpMessageError }}
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
