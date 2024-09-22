@@ -1,5 +1,8 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# Backend mock
+/backend/node_modules/
+
 # Compiled output
 /dist
 /tmp
@@ -14,6 +17,7 @@ yarn-error.log
 # IDEs and editors
 .idea/
 .project
+.vscode
 .classpath
 .c9/
 *.launch
