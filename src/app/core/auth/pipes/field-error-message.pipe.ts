@@ -29,7 +29,6 @@ export class SignUpFieldErrorMessagePipe implements PipeTransform {
   private defineErrorMessage(errors: ValidationErrors): string {
     return Object.entries(errors)
       .map(([key, value]) => {
-        debugger;
         if (typeof value === 'string' && value.length > 0) {
           return value;
         } else if ((value === true || typeof value === 'object') && ERROR_MESSAGES[key]) {

@@ -11,7 +11,9 @@ export class SignUpValidators implements AsyncValidator {
 
   validate(control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> {
     return this.authService.isEmailInUse(control.value).pipe(
-      map((response) => (response ? { emailInUse: true } : null)),
+      map((response) => {
+        return response?.emailInUse ? { emailInUse: true } : null;
+      }),
       catchError(() => of(null))
     );
   }

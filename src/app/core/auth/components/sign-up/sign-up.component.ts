@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { SignUpFieldErrorMessagePipe } from '../../pipes/field-error-message.pipe';
+import { AuthService } from '../../services/auth.service';
 import { passWordMatchValidator, SignUpValidators } from '../../validators/sign-up.validators';
 
 @Component({
@@ -13,11 +15,45 @@ import { passWordMatchValidator, SignUpValidators } from '../../validators/sign-
 })
 export class SignUpComponent implements OnInit {
   public form!: UntypedFormGroup;
+  public alertClass = '';
+  public showUserFeedBack = false;
+  public ongoingAPIRequest = false;
+  public userFeedBackResponse = '';
 
-  constructor(private signUpValidators: SignUpValidators) {}
+  constructor(
+    private signUpValidators: SignUpValidators,
+    private authService: AuthService,
+    private changeDetector: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  public createNewUser(): void {
+    this.ongoingAPIRequest = true;
+
+    const requestBody = this.form.value;
+    delete requestBody?.repeatPassword;
+
+    this.authService.signUp(requestBody).subscribe({
+      next: (response) => {
+        this.handleFeedBackFromServer('alert-success', response.feedBackMessage);
+      },
+      error: (httpError: HttpErrorResponse) => {
+        this.handleFeedBackFromServer('alert-danger', httpError?.error?.feedBackMessage);
+      }
+    });
+  }
+
+  private handleFeedBackFromServer(alertClass: string, message: string): void {
+    this.alertClass = `alert ${alertClass}`;
+    this.showUserFeedBack = true;
+    this.userFeedBackResponse = message;
+
+    this.ongoingAPIRequest = false;
+
+    this.changeDetector.detectChanges();
   }
 
   private createForm(): void {
